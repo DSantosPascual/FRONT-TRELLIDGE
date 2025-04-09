@@ -1,35 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import Wall from './components/Wall.jsx';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [categories, setCategories] = useState([]);
+  const [tasks, setTasks] = useState([]);
+
+  // Obtener las categorías y las tareas cuando se carga el componente
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const cats = await axios.get('http://localhost:3000/api/categories');
+        const tks = await axios.get('http://localhost:3000/api/tasks');
+        setCategories(cats.data);
+        setTasks(tks.data);
+      } catch (error) {
+        console.error('Error al obtener los datos:', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Función para mover una tarea a una nueva categoría
+  const moveTask = async (taskId, newCategoryId) => {
+    try {
+      // Actualiza la tarea en la base de datos
+      await axios.put(`http://localhost:3000/api/tasks/id/${taskId}`, { category: newCategoryId });
+
+      // Actualiza la tarea en el estado local
+      setTasks(prevTasks =>
+        prevTasks.map(task =>
+          task._id === taskId ? { ...task, category: { _id: newCategoryId } } : task
+        )
+      );
+    } catch (error) {
+      console.error('Error al mover la tarea:', error);
+    }
+  };
+
+  // Función para agregar una nueva tarea
+  const addTask = async (taskData) => {
+    try {
+      const res = await axios.post('http://localhost:3000/api/tasks/create', taskData);
+      setTasks(prevTasks => [...prevTasks, res.data]);
+    } catch (error) {
+      console.error('Error al agregar la tarea:', error);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="p-4">
+      <h1 className="text-center text-2xl font-bold mb-4">Tablero de Tareas</h1>
+
+      {/* Pasar las categorías, tareas y funciones al componente Wall */}
+      <Wall 
+        categories={categories} 
+        tasks={tasks}
+        moveTask={moveTask}
+        addTask={addTask} 
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;
