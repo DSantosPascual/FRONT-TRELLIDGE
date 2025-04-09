@@ -1,13 +1,9 @@
 import { useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import TaskCard from './TaskCard';  // Asegúrate de tener un componente TaskCard adecuado
+import TaskCard from './TaskCard';
+import './CategoryColumn.css';
 
-const CategoryColumn = ({ category, tasks, moveTask, addTask }) => {
-  const [, drop] = useDrop(() => ({
-    accept: 'TASK',
-    drop: (item) => moveTask(item.id, category._id)
-  }));
-
+function CategoryColumn({ category, tasks, moveTask, addTask }) {
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   const handleCreateTask = async () => {
@@ -16,33 +12,36 @@ const CategoryColumn = ({ category, tasks, moveTask, addTask }) => {
     setNewTaskTitle('');
   };
 
-  return (
-    <div ref={drop} className="w-64 p-4 bg-gray-100 rounded mr-4">
-      <h2 className="font-bold mb-2">{category.name}</h2>
+  const [{ isOver }, drop] = useDrop({
+    accept: 'TASK',
+    drop: (item) => moveTask(item.id, category._id), // Mueve la tarea al soltarla
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  });
 
-      {/* Mostrar tareas de la categoría */}
-      {tasks.map((task) => (
+  return (
+    <div
+      className="category-column"
+      ref={drop}  // Asigna el drop area
+      style={{ backgroundColor: isOver ? 'lightgreen' : 'transparent' }}  // Cambiar color cuando se esté sobre el área de soltar
+    >
+      <h2 className="category-title">{category.title}</h2>
+      {tasks.map((task, index) => (
         <TaskCard key={task._id} task={task} moveTask={moveTask} />
       ))}
-
-      {/* Crear nueva tarea */}
-      <div className="mt-4">
+      <div className="task-input-container">
         <input
           type="text"
           value={newTaskTitle}
           onChange={(e) => setNewTaskTitle(e.target.value)}
           placeholder="Añadir tarea..."
-          className="w-full p-1 rounded border"
+          className="task-input"
         />
-        <button
-          onClick={handleCreateTask}
-          className="mt-1 w-full bg-blue-500 text-white py-1 rounded hover:bg-blue-600"
-        >
-          Añadir
-        </button>
+        <button onClick={handleCreateTask} className="task-add-button">Añadir</button>
       </div>
     </div>
   );
-};
+}
 
 export default CategoryColumn;
