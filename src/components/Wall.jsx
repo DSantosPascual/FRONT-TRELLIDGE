@@ -4,11 +4,13 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import CategoryColumn from './CategoryColumn';
 import CreateCategory from './CreateCategory';
+import TaskOverlay from './TaskOverlay';
 import './Wall.css';
 
 function Wall() {
   const [categories, setCategories] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [selectedTask, setSelectedTask] = useState(null); // ← para abrir el overlay
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +36,18 @@ function Wall() {
     setTasks([...tasks, res.data]);
   };
 
+  const deleteTask = async (taskId) => {
+    await axios.delete(`http://localhost:3000/api/tasks/id/${taskId}`);
+    setTasks(prev => prev.filter(task => task._id !== taskId));
+    setSelectedTask(null);
+  };
+
+  const deleteCategory = async (categoryId) => {
+    await axios.delete(`http://localhost:3000/api/categories/id/${categoryId}`);
+    setCategories(prev => prev.filter(cat => cat._id !== categoryId));
+    setTasks(prev => prev.filter(task => task.category?._id !== categoryId));
+  };
+
   const handleCategoryCreated = (newCategory) => {
     setCategories([...categories, newCategory]);
   };
@@ -44,7 +58,6 @@ function Wall() {
         title: newTitle
       });
       const updatedTask = res.data;
-
       setTasks(prevTasks =>
         prevTasks.map(task =>
           task._id === taskId ? { ...task, title: updatedTask.title } : task
@@ -61,7 +74,6 @@ function Wall() {
         name: newName
       });
       const updatedCategory = res.data;
-
       setCategories(prevCategories =>
         prevCategories.map(cat =>
           cat._id === categoryId ? { ...cat, name: updatedCategory.name } : cat
@@ -72,23 +84,47 @@ function Wall() {
     }
   };
 
+  const updateFullTask = async (updatedTask) => {
+    const res = await axios.put(`http://localhost:3000/api/tasks/${updatedTask._id}`, updatedTask);
+    const saved = res.data;
+    setTasks(prev => prev.map(t => t._id === saved._id ? saved : t));
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="wall">
         <CreateCategory onCategoryCreated={handleCategoryCreated} />
         <div className="columns">
           {categories.map(cat => (
-            <CategoryColumn
-              key={cat._id}
-              category={cat}
-              tasks={tasks.filter(task => task.category && task.category._id === cat._id)}
-              moveTask={moveTask}
-              addTask={addTask}
-              renameTask={renameTask}
-              renameCategory={renameCategory}
-            />
+            <div key={cat._id} className="category-container">
+              <button
+                className="delete-category-btn"
+                onClick={() => deleteCategory(cat._id)}
+              >
+                🗑
+              </button>
+              <CategoryColumn
+                category={cat}
+                tasks={tasks.filter(task => task.category && task.category._id === cat._id)}
+                moveTask={moveTask}
+                addTask={addTask}
+                renameTask={renameTask}
+                renameCategory={renameCategory}
+                onDeleteTask={deleteTask}
+                onTaskClick={setSelectedTask} // ← PASAMOS FUNCION
+              />
+            </div>
           ))}
         </div>
+
+        {selectedTask && (
+          <TaskOverlay
+            task={selectedTask}
+            onClose={() => setSelectedTask(null)}
+            onSave={updateFullTask}
+            onDelete={deleteTask}
+          />
+        )}
       </div>
     </DndProvider>
   );

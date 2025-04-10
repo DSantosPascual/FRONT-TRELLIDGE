@@ -1,0 +1,79 @@
+.overlay-backdrop {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  
+  .overlay-card {
+    background: white;
+    padding: 20px;
+    width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .overlay-card h2 {
+    margin-top: 0;
+  }
+  
+  .overlay-card label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  .overlay-card input[type="text"],
+  .overlay-card textarea {
+    width: 100%;
+    margin-top: 4px;
+    padding: 6px 8px;
+    margin-bottom: 10px;
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 60px;
+  }
+  
+  .checklist-section {
+    margin-top: 20px;
+  }
+  
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  
+  .checklist-item span.done {
+    text-decoration: line-through;
+    color: gray;
+  }
+  
+  .checklist-input {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  
+  .overlay-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  button.danger {
+    background: crimson;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+  

@@ -13,7 +13,7 @@ function Category({ category, onRename }) {
   };
 
   return (
-    <div className="category-name">
+    <div className="category-title">
       {isEditing ? (
         <input
           value={title}

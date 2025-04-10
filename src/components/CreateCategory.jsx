@@ -3,14 +3,14 @@ import axios from 'axios';
 import './CreateCategory.css';
 
 function CreateCategory({ onCategoryCreated }) {
-  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
 
   const handleCreate = async () => {
-    if (!name.trim()) return;
+    if (!title.trim()) return;
     try {
-      const res = await axios.post('http://localhost:3000/api/categories/create', { name });
+      const res = await axios.post('http://localhost:3000/api/categories/create', { title });
       onCategoryCreated(res.data); 
-      setName('');
+      setTitle('');
     } catch (err) {
       console.error('Error al crear categoría', err);
     }
@@ -19,8 +19,8 @@ function CreateCategory({ onCategoryCreated }) {
   return (
     <div className="create-category">
       <input 
-        value={name} 
-        onChange={(e) => setName(e.target.value)} 
+        value={title} 
+        onChange={(e) => setTitle(e.target.value)} 
         placeholder="Nombre de la categoría" 
       />
       <button onClick={handleCreate}>Crear categoría</button>

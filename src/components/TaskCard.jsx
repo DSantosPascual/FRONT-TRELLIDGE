@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDrag } from 'react-dnd';
 import './TaskCard.css';
 
-function TaskCard({ task, moveTask, onRename }) {
+function TaskCard({ task, moveTask, onRename, onDelete, onClick }) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(task.title);
 
@@ -19,7 +19,7 @@ function TaskCard({ task, moveTask, onRename }) {
   };
 
   return (
-    <div ref={drag} className="task-card">
+    <div ref={drag} className="task-card" onClick={() => onClick(task)}>
       {isEditing ? (
         <input
           value={title}
@@ -29,8 +29,19 @@ function TaskCard({ task, moveTask, onRename }) {
           autoFocus
         />
       ) : (
-        <div onClick={() => setIsEditing(true)}>{task.title}</div>
+        <div className={task.completed ? 'task-completed' : ''}>
+          {task.title}
+        </div>
       )}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete(task._id);
+        }}
+        className="delete-task-btn"
+      >
+        ✖
+      </button>
     </div>
   );
 }

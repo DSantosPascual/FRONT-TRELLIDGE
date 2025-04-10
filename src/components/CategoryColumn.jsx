@@ -1,10 +1,19 @@
 import { useState } from 'react';
 import { useDrop } from 'react-dnd';
 import TaskCard from './TaskCard';
-import Category from './Category'; // nuevo
+import Category from './Category';
 import './CategoryColumn.css';
 
-function CategoryColumn({ category, tasks, moveTask, addTask, renameCategory, renameTask }) {
+function CategoryColumn({
+  category,
+  tasks,
+  moveTask,
+  addTask,
+  renameCategory,
+  renameTask,
+  onDeleteTask,
+  onTaskClick // ← añadido
+}) {
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   const handleCreateTask = async () => {
@@ -30,7 +39,14 @@ function CategoryColumn({ category, tasks, moveTask, addTask, renameCategory, re
       <Category category={category} onRename={renameCategory} />
 
       {tasks.map((task) => (
-        <TaskCard key={task._id} task={task} moveTask={moveTask} onRename={renameTask} />
+        <TaskCard
+          key={task._id}
+          task={task}
+          moveTask={moveTask}
+          onRename={renameTask}
+          onDelete={onDeleteTask}
+          onClick={onTaskClick}
+        />
       ))}
 
       <div className="task-input-container">
@@ -38,6 +54,7 @@ function CategoryColumn({ category, tasks, moveTask, addTask, renameCategory, re
           type="text"
           value={newTaskTitle}
           onChange={(e) => setNewTaskTitle(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleCreateTask()}
           placeholder="Añadir tarea..."
           className="task-input"
         />
