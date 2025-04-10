@@ -1,0 +1,35 @@
+.category-name {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .category-name h2 {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0;
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .category-name h2:hover {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+  }
+  
+  .category-name input {
+    font-size: 1.1rem;
+    padding: 6px 8px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .category-name input:focus {
+    border-color: #0079bf;
+    box-shadow: 0 0 0 2px rgba(0, 121, 191, 0.2);
+  }
+  

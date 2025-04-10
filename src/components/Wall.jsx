@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';  // Importa los hooks y DndProvider
-import { HTML5Backend } from 'react-dnd-html5-backend';  // Importa el backend para el drag and drop
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import CategoryColumn from './CategoryColumn';
 import CreateCategory from './CreateCategory';
 import './Wall.css';
@@ -38,23 +38,57 @@ function Wall() {
     setCategories([...categories, newCategory]);
   };
 
+  const renameTask = async (taskId, newTitle) => {
+    try {
+      const res = await axios.put(`http://localhost:3000/api/tasks/${taskId}`, {
+        title: newTitle
+      });
+      const updatedTask = res.data;
+
+      setTasks(prevTasks =>
+        prevTasks.map(task =>
+          task._id === taskId ? { ...task, title: updatedTask.title } : task
+        )
+      );
+    } catch (error) {
+      console.error("Error al renombrar tarea:", error);
+    }
+  };
+
+  const renameCategory = async (categoryId, newName) => {
+    try {
+      const res = await axios.put(`http://localhost:3000/api/categories/${categoryId}`, {
+        name: newName
+      });
+      const updatedCategory = res.data;
+
+      setCategories(prevCategories =>
+        prevCategories.map(cat =>
+          cat._id === categoryId ? { ...cat, name: updatedCategory.name } : cat
+        )
+      );
+    } catch (error) {
+      console.error("Error al renombrar categoría:", error);
+    }
+  };
+
   return (
-    <DndProvider backend={HTML5Backend}> {/* Proporciona el contexto de DND */}
+    <DndProvider backend={HTML5Backend}>
       <div className="wall">
-        {/* <h1>Tablero de Tareas</h1> */}
         <CreateCategory onCategoryCreated={handleCategoryCreated} />
         <div className="columns">
-  {categories.map(cat => (
-    <CategoryColumn
-      key={cat._id}
-      category={cat}
-      tasks={tasks.filter(task => task.category && task.category._id === cat._id)} // Comprobamos que task.category exista
-      moveTask={moveTask}
-      addTask={addTask}
-    />
-  ))}
-</div>
-
+          {categories.map(cat => (
+            <CategoryColumn
+              key={cat._id}
+              category={cat}
+              tasks={tasks.filter(task => task.category && task.category._id === cat._id)}
+              moveTask={moveTask}
+              addTask={addTask}
+              renameTask={renameTask}
+              renameCategory={renameCategory}
+            />
+          ))}
+        </div>
       </div>
     </DndProvider>
   );

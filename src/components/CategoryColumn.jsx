@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 import TaskCard from './TaskCard';
+import Category from './Category'; // nuevo
 import './CategoryColumn.css';
 
-function CategoryColumn({ category, tasks, moveTask, addTask }) {
+function CategoryColumn({ category, tasks, moveTask, addTask, renameCategory, renameTask }) {
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   const handleCreateTask = async () => {
@@ -14,7 +15,7 @@ function CategoryColumn({ category, tasks, moveTask, addTask }) {
 
   const [{ isOver }, drop] = useDrop({
     accept: 'TASK',
-    drop: (item) => moveTask(item.id, category._id), // Mueve la tarea al soltarla
+    drop: (item) => moveTask(item.id, category._id),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     }),
@@ -23,13 +24,15 @@ function CategoryColumn({ category, tasks, moveTask, addTask }) {
   return (
     <div
       className="category-column"
-      ref={drop}  // Asigna el drop area
-      style={{ backgroundColor: isOver ? 'lightgreen' : 'transparent' }}  // Cambiar color cuando se esté sobre el área de soltar
+      ref={drop}
+      style={{ backgroundColor: isOver ? 'lightgreen' : 'transparent' }}
     >
-      <h2 className="category-title">{category.title}</h2>
-      {tasks.map((task, index) => (
-        <TaskCard key={task._id} task={task} moveTask={moveTask} />
+      <Category category={category} onRename={renameCategory} />
+
+      {tasks.map((task) => (
+        <TaskCard key={task._id} task={task} moveTask={moveTask} onRename={renameTask} />
       ))}
+
       <div className="task-input-container">
         <input
           type="text"
