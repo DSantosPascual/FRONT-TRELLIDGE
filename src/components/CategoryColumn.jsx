@@ -36,7 +36,7 @@ function CategoryColumn({
     <div
       className="category-column"
       ref={drop}
-      style={{ backgroundColor: isOver ? 'lightgreen' : 'undefinded' }}
+      style={isOver ? { backgroundColor: 'lightgreen' } : {}}
     >
       <Category
         category={category}
