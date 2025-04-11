@@ -33,6 +33,7 @@ function TaskCard({ task, moveTask, onRename, onDelete, onClick }) {
           {task.title}
         </div>
       )}
+
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -40,7 +41,7 @@ function TaskCard({ task, moveTask, onRename, onDelete, onClick }) {
         }}
         className="delete-task-btn"
       >
-        ✖
+        <img src="/icons/borrar.png" alt="Eliminar" />
       </button>
     </div>
   );

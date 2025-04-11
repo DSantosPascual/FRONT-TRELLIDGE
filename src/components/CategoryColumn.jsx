@@ -12,8 +12,10 @@ function CategoryColumn({
   renameCategory,
   renameTask,
   onDeleteTask,
-  onTaskClick // ← añadido
+  onDeleteCategory,
+  onTaskClick
 }) {
+
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   const handleCreateTask = async () => {
@@ -36,7 +38,11 @@ function CategoryColumn({
       ref={drop}
       style={{ backgroundColor: isOver ? 'lightgreen' : 'transparent' }}
     >
-      <Category category={category} onRename={renameCategory} />
+      <Category
+        category={category}
+        onRename={renameCategory}
+        onDelete={onDeleteCategory}
+      />
 
       {tasks.map((task) => (
         <TaskCard

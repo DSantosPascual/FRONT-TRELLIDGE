@@ -10,7 +10,7 @@ import './Wall.css';
 function Wall() {
   const [categories, setCategories] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [selectedTask, setSelectedTask] = useState(null); // ← para abrir el overlay
+  const [selectedTask, setSelectedTask] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,12 +97,6 @@ function Wall() {
         <div className="columns">
           {categories.map(cat => (
             <div key={cat._id} className="category-container">
-              <button
-                className="delete-category-btn"
-                onClick={() => deleteCategory(cat._id)}
-              >
-                🗑
-              </button>
               <CategoryColumn
                 category={cat}
                 tasks={tasks.filter(task => task.category && task.category._id === cat._id)}
@@ -111,7 +105,8 @@ function Wall() {
                 renameTask={renameTask}
                 renameCategory={renameCategory}
                 onDeleteTask={deleteTask}
-                onTaskClick={setSelectedTask} // ← PASAMOS FUNCION
+                onDeleteCategory={deleteCategory}
+                onTaskClick={setSelectedTask}
               />
             </div>
           ))}

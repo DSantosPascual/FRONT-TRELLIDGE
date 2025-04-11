@@ -71,3 +71,38 @@
     color: darkred;
   }
   
+
+  .category-title-container {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .category-title-container h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+    padding-right: 28px;
+    cursor: pointer;
+  }
+  
+  .delete-category-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+  }
+  
+  .delete-category-btn img {
+    width: 18px;
+    height: 18px;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .delete-category-btn img {
+      filter: invert(1);
+    }
+  }
+  

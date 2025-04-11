@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './Category.css';
 
-function Category({ category, onRename }) {
+function Category({ category, onRename, onDelete }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(category.title); // Asegúrate que sea "title"
+  const [title, setTitle] = useState(category.title);
 
   const handleBlur = () => {
     setIsEditing(false);
@@ -13,7 +13,7 @@ function Category({ category, onRename }) {
   };
 
   return (
-    <div className="category-title">
+    <div className="category-title-container">
       {isEditing ? (
         <input
           value={title}
@@ -23,7 +23,16 @@ function Category({ category, onRename }) {
           autoFocus
         />
       ) : (
-        <h2 onClick={() => setIsEditing(true)}>{category.title}</h2>
+        <>
+          <h2 onClick={() => setIsEditing(true)}>{category.title}</h2>
+          <button
+            onClick={() => onDelete(category._id)}
+            className="delete-category-btn"
+            title="Eliminar categoría"
+          >
+            <img src="/icons/papelera.png" alt="Eliminar" />
+          </button>
+        </>
       )}
     </div>
   );
