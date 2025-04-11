@@ -1,12 +1,48 @@
 .task-card {
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 0.75rem;
-  margin-bottom: 0.75rem;
-  text-align: left;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  background-color: white;
+  color: #222;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
+
+.task-card:hover {
+  background-color: #f2f2f2;
+}
+
+.task-card input {
+  font-size: 1rem;
+  padding: 6px 8px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  background-color: white;
+  color: #222;
+}
+
+@media (prefers-color-scheme: dark) {
+  .task-card {
+    background-color: #333;
+    color: #ccc;
+    border-color: #555;
+  }
+
+  .task-card:hover {
+    background-color: #3c3c3c;
+  }
+
+  .task-card input {
+    background-color: #444;
+    color: #eee;
+    border-color: #666;
+  }
+}
+
 
 .task-completed {
   text-decoration: line-through;
