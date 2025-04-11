@@ -1,6 +1,88 @@
 .wall {
+  padding: 20px;
+}
+
+.board-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #7a3eb1;
+  margin-bottom: 20px;
+}
+
+.columns {
   display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+
+
+
+.category-container {
+  flex: 0 0 auto; /* mantiene el tamaño fijo */
+}
+
+
+.background-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.background-selector label {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Título */
+.board-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #7a3eb1;
+  margin-bottom: 20px;
+}
+
+/* Panel flotante de fondo */
+.background-fab {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.toggle-background-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+  background: #ffffffaa;
+  border: none;
+  padding: 8px 12px;
+  font-size: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+@media (prefers-color-scheme: dark) {
+  .toggle-background-btn {
+    background: #333333aa;
+    color: white;
+  }
 }

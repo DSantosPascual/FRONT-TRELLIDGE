@@ -1,11 +1,12 @@
 .category-column {
   background-color: #f8f8f8;
+  color: #222;
   padding: 16px;
   border-radius: 8px;
   border: 1px solid #ddd;
-  width: 250px;
+  width: 270px;
+  box-sizing: border-box;
 }
-
 
 .category-title {
   font-size: 1.2rem;
@@ -32,6 +33,7 @@
 @media (prefers-color-scheme: dark) {
   .category-column {
     background-color: #2a2a2a;
+    color: #eee;
     border-color: #444;
   }
 }

@@ -11,6 +11,25 @@ function Wall() {
   const [categories, setCategories] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [showBgPanel, setShowBgPanel] = useState(false);
+
+  // Aplica fondo desde localStorage
+  useEffect(() => {
+    const savedBg = localStorage.getItem("wall-background");
+    const isImage = localStorage.getItem("wall-background-is-image");
+
+    if (savedBg) {
+      if (isImage === "true") {
+        document.body.style.backgroundImage = `url(${savedBg})`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        document.body.style.backgroundAttachment = 'fixed';
+      } else {
+        document.body.style.background = savedBg;
+        document.body.style.backgroundImage = '';
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,6 +112,49 @@ function Wall() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="wall">
+
+        {/* Selector de fondo flotante */}
+        <button className="toggle-background-btn" onClick={() => setShowBgPanel(!showBgPanel)}>
+  ⚙️
+</button>
+
+{showBgPanel && (
+  <div className="background-fab">
+    <label>Fondo:</label>
+    <input
+      type="color"
+      onChange={(e) => {
+        const color = e.target.value;
+        document.body.style.background = color;
+        document.body.style.backgroundImage = '';
+        localStorage.setItem("wall-background", color);
+        localStorage.setItem("wall-background-is-image", "false");
+      }}
+    />
+    <input
+      type="file"
+      accept="image/*"
+      onChange={(e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            const dataUrl = ev.target.result;
+            document.body.style.backgroundImage = `url(${dataUrl})`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundRepeat = 'no-repeat';
+            document.body.style.backgroundAttachment = 'fixed';
+            localStorage.setItem("wall-background", dataUrl);
+            localStorage.setItem("wall-background-is-image", "true");
+          };
+          reader.readAsDataURL(file);
+        }
+      }}
+    />
+  </div>
+)}
+
+
         <CreateCategory onCategoryCreated={handleCategoryCreated} />
         <div className="columns">
           {categories.map(cat => (
