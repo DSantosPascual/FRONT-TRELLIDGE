@@ -26,31 +26,11 @@
   color: #222;
 }
 
-@media (prefers-color-scheme: dark) {
-  .task-card {
-    background-color: #333;
-    color: #ccc;
-    border-color: #555;
-  }
-
-  .task-card:hover {
-    background-color: #3c3c3c;
-  }
-
-  .task-card input {
-    background-color: #444;
-    color: #eee;
-    border-color: #666;
-  }
-}
-
-
 .task-completed {
   text-decoration: line-through;
   color: gray;
   opacity: 0.7;
 }
-
 
 .delete-task-btn {
   background: none;
@@ -68,6 +48,22 @@
 }
 
 @media (prefers-color-scheme: dark) {
+  .task-card {
+    background-color: #333;
+    color: #ccc;
+    border-color: #555;
+  }
+
+  .task-card:hover {
+    background-color: #3c3c3c;
+  }
+
+  .task-card input {
+    background-color: #444;
+    color: #eee;
+    border-color: #666;
+  }
+
   .delete-task-btn img {
     filter: invert(1);
   }

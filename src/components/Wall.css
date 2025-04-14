@@ -21,12 +21,9 @@
   padding: 0 20px;
 }
 
-
-
 .category-container {
-  flex: 0 0 auto; /* mantiene el tamaño fijo */
+  flex: 0 0 auto;
 }
-
 
 .background-selector {
   display: flex;
@@ -41,16 +38,6 @@
   color: #333;
 }
 
-/* Título */
-.board-title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-  color: #7a3eb1;
-  margin-bottom: 20px;
-}
-
-/* Panel flotante de fondo */
 .background-fab {
   position: fixed;
   top: 20px;
