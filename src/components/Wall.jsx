@@ -33,10 +33,14 @@ function Wall() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const cats = await axios.get('https://back-trellidge.onrender.com/api/categories');
-      const tks = await axios.get('https://back-trellidge.onrender.com/api/tasks');
-      setCategories(cats.data);
-      setTasks(tks.data);
+      try {
+        const cats = await axios.get('https://back-trellidge.onrender.com/api/categories');
+        const tks = await axios.get('https://back-trellidge.onrender.com/api/tasks');
+        setCategories(cats.data);
+        setTasks(tks.data);
+      } catch (err) {
+        console.error('Error cargando datos:', err);
+      }
     };
     fetchData();
   }, []);
