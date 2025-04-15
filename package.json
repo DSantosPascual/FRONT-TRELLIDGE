@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "axios": "^1.8.4",
-    "package.json": "file:",
     "react": "^19.0.0",
     "react-color": "^2.19.3",
     "react-dnd": "^16.0.1",
