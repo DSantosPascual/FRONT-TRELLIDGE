@@ -33,8 +33,8 @@ function Wall() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const cats = await axios.get('http://localhost:3000/api/categories');
-      const tks = await axios.get('http://localhost:3000/api/tasks');
+      const cats = await axios.get('https://back-trellidge.onrender.com/api/categories');
+      const tks = await axios.get('https://back-trellidge.onrender.com/api/tasks');
       setCategories(cats.data);
       setTasks(tks.data);
     };
@@ -42,7 +42,7 @@ function Wall() {
   }, []);
 
   const moveTask = async (taskId, newCategoryId) => {
-    await axios.put(`http://localhost:3000/api/tasks/id/${taskId}`, { category: newCategoryId });
+    await axios.put(`https://back-trellidge.onrender.com/api/tasks/id/${taskId}`, { category: newCategoryId });
     setTasks(prevTasks =>
       prevTasks.map(task =>
         task._id === taskId ? { ...task, category: { _id: newCategoryId } } : task
@@ -51,18 +51,18 @@ function Wall() {
   };
 
   const addTask = async (taskData) => {
-    const res = await axios.post('http://localhost:3000/api/tasks/create', taskData);
+    const res = await axios.post('https://back-trellidge.onrender.com/api/tasks/create', taskData);
     setTasks([...tasks, res.data]);
   };
 
   const deleteTask = async (taskId) => {
-    await axios.delete(`http://localhost:3000/api/tasks/id/${taskId}`);
+    await axios.delete(`https://back-trellidge.onrender.com/api/tasks/id/${taskId}`);
     setTasks(prev => prev.filter(task => task._id !== taskId));
     setSelectedTask(null);
   };
 
   const deleteCategory = async (categoryId) => {
-    await axios.delete(`http://localhost:3000/api/categories/id/${categoryId}`);
+    await axios.delete(`https://back-trellidge.onrender.com/api/categories/id/${categoryId}`);
     setCategories(prev => prev.filter(cat => cat._id !== categoryId));
     setTasks(prev => prev.filter(task => task.category?._id !== categoryId));
   };
@@ -73,7 +73,7 @@ function Wall() {
 
   const renameTask = async (taskId, newTitle) => {
     try {
-      const res = await axios.put(`http://localhost:3000/api/tasks/${taskId}`, {
+      const res = await axios.put(`https://back-trellidge.onrender.com/api/tasks/${taskId}`, {
         title: newTitle
       });
       const updatedTask = res.data;
@@ -89,7 +89,7 @@ function Wall() {
 
   const renameCategory = async (categoryId, newName) => {
     try {
-      const res = await axios.put(`http://localhost:3000/api/categories/${categoryId}`, {
+      const res = await axios.put(`https://back-trellidge.onrender.com/api/categories/${categoryId}`, {
         name: newName
       });
       const updatedCategory = res.data;
@@ -104,7 +104,7 @@ function Wall() {
   };
 
   const updateFullTask = async (updatedTask) => {
-    const res = await axios.put(`http://localhost:3000/api/tasks/${updatedTask._id}`, updatedTask);
+    const res = await axios.put(`https://back-trellidge.onrender.com/api/tasks/${updatedTask._id}`, updatedTask);
     const saved = res.data;
     setTasks(prev => prev.map(t => t._id === saved._id ? saved : t));
   };
