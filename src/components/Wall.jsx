@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import CategoryColumn from './CategoryColumn';
@@ -13,7 +12,7 @@ function Wall() {
   const [selectedTask, setSelectedTask] = useState(null);
   const [showBgPanel, setShowBgPanel] = useState(false);
 
-  // Aplica fondo desde localStorage
+  // Fondo guardado
   useEffect(() => {
     const savedBg = localStorage.getItem("wall-background");
     const isImage = localStorage.getItem("wall-background-is-image");
@@ -31,22 +30,24 @@ function Wall() {
     }
   }, []);
 
+  // Cargar datos del localStorage
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const cats = await axios.get('https://back-trellidge.onrender.com/api/categories');
-        const tks = await axios.get('https://back-trellidge.onrender.com/api/tasks');
-        setCategories(cats.data);
-        setTasks(tks.data);
-      } catch (err) {
-        console.error('Error cargando datos:', err);
-      }
-    };
-    fetchData();
+    const storedCats = JSON.parse(localStorage.getItem('categories')) || [];
+    const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    setCategories(storedCats);
+    setTasks(storedTasks);
   }, []);
 
-  const moveTask = async (taskId, newCategoryId) => {
-    await axios.put(`https://back-trellidge.onrender.com/api/tasks/id/${taskId}`, { category: newCategoryId });
+  // Guardar datos en localStorage cada vez que cambian
+  useEffect(() => {
+    localStorage.setItem('categories', JSON.stringify(categories));
+  }, [categories]);
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+  const moveTask = (taskId, newCategoryId) => {
     setTasks(prevTasks =>
       prevTasks.map(task =>
         task._id === taskId ? { ...task, category: { _id: newCategoryId } } : task
@@ -54,112 +55,102 @@ function Wall() {
     );
   };
 
-  const addTask = async (taskData) => {
-    const res = await axios.post('https://back-trellidge.onrender.com/api/tasks/create', taskData);
-    setTasks([...tasks, res.data]);
+  const addTask = (taskData) => {
+    const newTask = {
+      ...taskData,
+      _id: crypto.randomUUID(),
+    };
+    setTasks([...tasks, newTask]);
   };
 
-  const deleteTask = async (taskId) => {
-    await axios.delete(`https://back-trellidge.onrender.com/api/tasks/id/${taskId}`);
+  const deleteTask = (taskId) => {
     setTasks(prev => prev.filter(task => task._id !== taskId));
     setSelectedTask(null);
   };
 
-  const deleteCategory = async (categoryId) => {
-    await axios.delete(`https://back-trellidge.onrender.com/api/categories/id/${categoryId}`);
+  const deleteCategory = (categoryId) => {
     setCategories(prev => prev.filter(cat => cat._id !== categoryId));
     setTasks(prev => prev.filter(task => task.category?._id !== categoryId));
   };
 
   const handleCategoryCreated = (newCategory) => {
-    setCategories([...categories, newCategory]);
+    const newCat = {
+      ...newCategory,
+      _id: crypto.randomUUID(),
+    };
+    setCategories([...categories, newCat]);
   };
 
-  const renameTask = async (taskId, newTitle) => {
-    try {
-      const res = await axios.put(`https://back-trellidge.onrender.com/api/tasks/${taskId}`, {
-        title: newTitle
-      });
-      const updatedTask = res.data;
-      setTasks(prevTasks =>
-        prevTasks.map(task =>
-          task._id === taskId ? { ...task, title: updatedTask.title } : task
-        )
-      );
-    } catch (error) {
-      console.error("Error al renombrar tarea:", error);
-    }
+  const renameTask = (taskId, newTitle) => {
+    setTasks(prev =>
+      prev.map(task =>
+        task._id === taskId ? { ...task, title: newTitle } : task
+      )
+    );
   };
 
-  const renameCategory = async (categoryId, newName) => {
-    try {
-      const res = await axios.put(`https://back-trellidge.onrender.com/api/categories/${categoryId}`, {
-        name: newName
-      });
-      const updatedCategory = res.data;
-      setCategories(prevCategories =>
-        prevCategories.map(cat =>
-          cat._id === categoryId ? { ...cat, name: updatedCategory.name } : cat
-        )
-      );
-    } catch (error) {
-      console.error("Error al renombrar categoría:", error);
-    }
+  const renameCategory = (categoryId, newName) => {
+    setCategories(prev =>
+      prev.map(cat =>
+        cat._id === categoryId ? { ...cat, name: newName } : cat
+      )
+    );
   };
 
-  const updateFullTask = async (updatedTask) => {
-    const res = await axios.put(`https://back-trellidge.onrender.com/api/tasks/${updatedTask._id}`, updatedTask);
-    const saved = res.data;
-    setTasks(prev => prev.map(t => t._id === saved._id ? saved : t));
+  const updateFullTask = (updatedTask) => {
+    setTasks(prev =>
+      prev.map(task =>
+        task._id === updatedTask._id ? updatedTask : task
+      )
+    );
   };
 
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="wall">
 
-        {/* Selector de fondo flotante */}
         <button className="toggle-background-btn" onClick={() => setShowBgPanel(!showBgPanel)}>
-  ⚙️
-</button>
+          ⚙️
+        </button>
 
-{showBgPanel && (
-  <div className="background-fab">
-    <label>Fondo:</label>
-    <input
-      type="color"
-      onChange={(e) => {
-        const color = e.target.value;
-        document.body.style.background = color;
-        document.body.style.backgroundImage = '';
-        localStorage.setItem("wall-background", color);
-        localStorage.setItem("wall-background-is-image", "false");
-      }}
-    />
-    <input
-      type="file"
-      accept="image/*"
-      onChange={(e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            const dataUrl = ev.target.result;
-            document.body.style.backgroundImage = `url(${dataUrl})`;
-            document.body.style.backgroundSize = 'cover';
-            document.body.style.backgroundRepeat = 'no-repeat';
-            document.body.style.backgroundAttachment = 'fixed';
-            localStorage.setItem("wall-background", dataUrl);
-            localStorage.setItem("wall-background-is-image", "true");
-          };
-          reader.readAsDataURL(file);
-        }
-      }}
-    />
-  </div>
-)}
-
+        {showBgPanel && (
+          <div className="background-fab">
+            <label>Fondo:</label>
+            <input
+              type="color"
+              onChange={(e) => {
+                const color = e.target.value;
+                document.body.style.background = color;
+                document.body.style.backgroundImage = '';
+                localStorage.setItem("wall-background", color);
+                localStorage.setItem("wall-background-is-image", "false");
+              }}
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onload = (ev) => {
+                    const dataUrl = ev.target.result;
+                    document.body.style.backgroundImage = `url(${dataUrl})`;
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundRepeat = 'no-repeat';
+                    document.body.style.backgroundAttachment = 'fixed';
+                    localStorage.setItem("wall-background", dataUrl);
+                    localStorage.setItem("wall-background-is-image", "true");
+                  };
+                  reader.readAsDataURL(file);
+                }
+              }}
+            />
+          </div>
+        )}
 
         <CreateCategory onCategoryCreated={handleCategoryCreated} />
+
         <div className="columns">
           {categories.map(cat => (
             <div key={cat._id} className="category-container">
