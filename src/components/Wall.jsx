@@ -59,7 +59,7 @@ function Wall() {
     const newTask = {
       ...taskData,
       _id: crypto.randomUUID(),
-      category: { _id: taskData.categoryId },
+      category: taskData.category,
     };
     setTasks([...tasks, newTask]);
   };
