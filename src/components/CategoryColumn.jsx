@@ -20,7 +20,7 @@ function CategoryColumn({
 
   const handleCreateTask = async () => {
     if (!newTaskTitle.trim()) return;
-    await addTask({ title: newTaskTitle, category: category._id });
+    await addTask({ title: newTaskTitle, categoryId: category._id });
     setNewTaskTitle('');
   };
 
