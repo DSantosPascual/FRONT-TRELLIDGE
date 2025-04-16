@@ -30,7 +30,7 @@ function Category({ category, onRename, onDelete }) {
             className="delete-category-btn"
             title="Eliminar categoría"
           >
-            <img src="/icons/papelera.png" alt="Eliminar" />
+            <img src="/FRONT-TRELLIDGE//icons/papelera.png" alt="Eliminar" />
           </button>
         </>
       )}

@@ -41,7 +41,7 @@ function TaskCard({ task, moveTask, onRename, onDelete, onClick }) {
         }}
         className="delete-task-btn"
       >
-        <img src="/icons/borrar.png" alt="Eliminar" />
+        <img src="/FRONT-TRELLIDGE/icons/borrar.png" alt="Borrar" />
       </button>
     </div>
   );
