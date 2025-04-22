@@ -1,4 +1,4 @@
-.app-footer {
+.footer {
     text-align: center;
     font-size: 0.9rem;
     color: #777;
@@ -9,7 +9,7 @@
   }
   
   @media (prefers-color-scheme: dark) {
-    .app-footer {
+    .footer {
       background-color: #1c1c1c;
       color: #aaa;
       border-top: 1px solid #444;

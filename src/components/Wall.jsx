@@ -12,7 +12,6 @@ function Wall() {
   const [selectedTask, setSelectedTask] = useState(null);
   const [showBgPanel, setShowBgPanel] = useState(false);
 
-  // Fondo guardado
   useEffect(() => {
     const savedBg = localStorage.getItem("wall-background");
     const isImage = localStorage.getItem("wall-background-is-image");
@@ -30,7 +29,6 @@ function Wall() {
     }
   }, []);
 
-  // Cargar datos del localStorage
   useEffect(() => {
     const storedCats = JSON.parse(localStorage.getItem('categories')) || [];
     const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -38,7 +36,6 @@ function Wall() {
     setTasks(storedTasks);
   }, []);
 
-  // Guardar datos en localStorage cada vez que cambian
   useEffect(() => {
     localStorage.setItem('categories', JSON.stringify(categories));
   }, [categories]);

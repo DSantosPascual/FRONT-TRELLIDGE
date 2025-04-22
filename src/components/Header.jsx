@@ -40,7 +40,7 @@ function Header({
   };
 
   return (
-    <header className="app-header">
+    <header className="header">
       <div className="title-edit-wrapper">
         {isEditingTitle ? (
           <>

@@ -1,6 +1,7 @@
 📌 Trellidge – Frontend
 
-Este repositorio contiene el frontend de Trellidge, una aplicación tipo Trello que permite la gestión visual de tareas mediante columnas (categorías) y tarjetas (tareas). Está construida con React + Vite, y permite crear, editar, mover y eliminar tareas de forma intuitiva.
+En este repositorio encontrarás el frontend de Trellidge, una aplicación tipo Trello que permite la gestión de tareas mediante columnas (categorías) y tarjetas (tareas). Está construida con React + Vite.
+Partiendo de un CRUD de tareas básico, hemos ido añadiendo funciones según las necesidades, no solo podemos crear, editar y borrar tareas sino que además podemos crear categorías y mover las tareas dentro de las diferentes categorías, utilizando una extensión de React llamada drag and drop.
 
 🧰 Tecnologías utilizadas
 
@@ -32,11 +33,13 @@ npm run dev
 
 ✏️ Editar tareas:
 
-Descripción
+Al pinchar en una tarea podemos:
 
-Checklist con ítems marcables
+Escribir una descripción de ésta.
 
-Estado de completado
+Crear un checklist con ítems marcables.
+
+Marcarlas como completadas.
 
 🔀 Reorganizar tareas:
 
@@ -61,16 +64,11 @@ FRONT-TRELLIDGE/
 
 🌐 Despliegue
 
-Este proyecto puede ser desplegado fácilmente en plataformas como GitHub Pages, Netlify o Vercel.
-Si necesitas ayuda con el despliegue, puedes consultar la guía oficial de Vite:
-https://vitejs.dev/guide/static-deploy.html
+Este proyecto ha sido desplegado utilizando GitHub Pages:
+https://dsantospascual.github.io/FRONT-TRELLIDGE/
 
-📄 Licencia
 
-Este proyecto se encuentra bajo la licencia MIT.
+Este proyecto ha sido creado por:
 
-🤝 Contribuciones
-
-¡Las contribuciones son bienvenidas!
-Si encuentras errores o quieres proponer mejoras, abre un issue o haz un pull request.
+Dámaso Santos, Adrián Pajuelo y Adrián Garrido.
 
