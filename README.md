@@ -27,7 +27,7 @@ npm run dev
 
 🎯 Funcionalidades principales
 
-✅ Crear columnas (categorías) personalizadas
+✅ Crear columnas (categorías) personalizadas **Nota: Recomendamos esperar unos segundos si aparece en blanco el navegador al crear la primera categoría**
 
 📝 Añadir tareas en cualquier categoría
 
